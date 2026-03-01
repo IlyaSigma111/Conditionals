@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учитель - Conditionals Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 50%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        #mainInterface {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        .teacher-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-left p {
+            margin: 5px 0 0 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .game-code-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            border-radius: 16px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .code-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #43e97b;
+            letter-spacing: 3px;
+            min-width: 180px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(67, 233, 123, 0.3);
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .main-content {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+            overflow: hidden;
+        }
+        
+        .left-column {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .right-column {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        .scrollable-panel {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .glass-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .glass-btn:hover::before {
+            left: 100%;
+        }
+        
+        .glass-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-btn-create {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+        
+        .glass-btn-start {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(56, 249, 215, 0.2));
+            border-color: rgba(67, 233, 123, 0.5);
+        }
+        
+        .glass-btn-show {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+            border-color: rgba(240, 147, 251, 0.5);
+        }
+        
+        .glass-btn-next {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-color: rgba(79, 172, 254, 0.5);
+        }
+        
+        .glass-btn-reset {
+            background: linear-gradient(135deg, rgba(255, 65, 108, 0.2), rgba(255, 75, 43, 0.2));
+            border-color: rgba(255, 65, 108, 0.5);
+        }
+        
+        .question-info {
+            background: rgba(79, 172, 254, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-label {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #43e97b;
+        }
+        
+        .players-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .player-card {
+            background: rgba(79, 172, 254, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(79, 172, 254, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .player-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 172, 254, 0.5);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
+        }
+        
+        .player-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+        }
+        
+        .player-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .player-score {
+            font-size: 1.1rem;
+            color: #43e97b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .questions-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .question-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .question-item:hover {
+            background: rgba(79, 172, 254, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .question-item.active {
+            border-color: #f093fb;
+            background: rgba(240, 147, 251, 0.15);
+            box-shadow: 0 0 20px rgba(240, 147, 251, 0.3);
+        }
+        
+        .question-item.completed {
+            border-color: #43e97b;
+            background: rgba(67, 233, 123, 0.1);
+        }
+        
+        .question-number {
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+        
+        .question-type {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .presentation-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .presentation-mode.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .presentation-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .presentation-info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .presentation-title {
+            font-size: 1.3rem;
+            color: #4facfe;
+            font-weight: 700;
+        }
+        
+        .answers-stats {
+            display: flex;
+            gap: 20px;
+            margin-left: auto;
+        }
+        
+        .answer-stat {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px 20px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .answer-stat.answered {
+            border: 1px solid #4facfe;
+        }
+        
+        .answer-stat.correct {
+            border: 1px solid #43e97b;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .presentation-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            overflow: auto;
+        }
+        
+        .presentation-question {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            border-radius: 32px;
+            padding: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .presentation-question h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .option-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .correct-answer {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(67, 233, 123, 0.1);
+            border-radius: 24px;
+            border: 2px solid rgba(67, 233, 123, 0.3);
+        }
+        
+        .presentation-controls {
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            opacity: 0.4;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .left-column, .right-column {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .teacher-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 15px;
+            }
+            
+            .answers-stats {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .presentation-question {
+                padding: 30px;
+            }
+            
+            .presentation-question h2 {
+                font-size: 1.8rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="mainInterface">
+        <header class="teacher-header">
+            <div class="header-left">
+                <h1>📚 Conditionals Quiz</h1>
+                <p>Английский язык • 9 класс • 0, 1, 2, 3 типы</p>
+            </div>
+            <div class="header-buttons">
+                <div class="game-code-box">
+                    <div class="code-label">КОД ИГРЫ:</div>
+                    <div id="gameCode" class="code-display">----</div>
+                </div>
+                <a href="index.html" class="glass-btn" style="padding: 12px 20px;">
+                    <i class="fas fa-home"></i> Главная
+                </a>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="glass-panel">
+                    <h2><i class="fas fa-gamepad"></i> Управление игрой</h2>
+                    
+                    <div id="startSection">
+                        <p style="margin-bottom: 20px;">Начните новую викторину для класса</p>
+                        <button onclick="startNewGame()" class="glass-btn glass-btn-create">
+                            <i class="fas fa-plus-circle"></i> СОЗДАТЬ НОВУЮ ИГРУ
+                        </button>
+                    </div>
+
+                    <div id="gameControls" style="display: none;">
+                        <div class="control-buttons">
+                            <button onclick="startNextQuestion()" class="glass-btn glass-btn-start">
+                                <i class="fas fa-play"></i> ПОКАЗАТЬ ВОПРОС
+                            </button>
+                            <button onclick="showAnswer()" class="glass-btn glass-btn-show">
+                                <i class="fas fa-check-circle"></i> ПОКАЗАТЬ ОТВЕТ
+                            </button>
+                            <button onclick="nextQuestion()" class="glass-btn glass-btn-next">
+                                <i class="fas fa-forward"></i> СЛЕДУЮЩИЙ ВОПРОС
+                            </button>
+                            <button onclick="resetGame()" class="glass-btn glass-btn-reset">
+                                <i class="fas fa-redo-alt"></i> СБРОСИТЬ ИГРУ
+                            </button>
+                        </div>
+                        
+                        <div class="question-info">
+                            <div class="info-item">
+                                <span class="info-label">Текущий вопрос</span>
+                                <span id="currentQ" class="info-value">0/15</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Игроков</span>
+                                <span id="playerCount" class="info-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel scrollable-panel">
+                    <h2><i class="fas fa-users"></i> Участники</h2>
+                    <div id="playersList" class="players-list">
+                        <div class="empty-state">
+                            <div class="empty-icon">👥</div>
+                            <p>Участники появятся после подключения</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="glass-panel">
+                    <h2><i class="fas fa-chart-bar"></i> Статистика ответов</h2>
+                    <div id="statsContent" class="stats-content">
+                        <div class="empty-state">
+                            <div class="empty-icon">📊</div>
+                            <p>Статистика появится после ответов</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel scrollable-panel">
+                    <h2><i class="fas fa-list-ol"></i> Вопросы (15)</h2>
+                    <div id="questionsList" class="questions-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="presentationMode" class="presentation-mode">
+        <div class="presentation-header">
+            <div class="presentation-info">
+                <span class="presentation-title">📢 ВОПРОС</span>
+                <span id="presentationQNum" style="font-size: 1.2rem;">1/15</span>
+            </div>
+            
+            <div class="answers-stats">
+                <div class="answer-stat answered">
+                    <div class="stat-number" id="answeredCount">0</div>
+                    <div class="stat-label">Ответили</div>
+                </div>
+                <div class="answer-stat correct">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div class="stat-label">Правильно</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="presentation-content">
+            <div id="presentationQuestion" class="presentation-question"></div>
+        </div>
+
+        <div class="presentation-controls">
+            <button onclick="exitPresentation()" class="glass-btn glass-btn-reset">
+                <i class="fas fa-times"></i> ВЕРНУТЬСЯ
+            </button>
+            <button onclick="showAnswerPresentation()" class="glass-btn glass-btn-show">
+                <i class="fas fa-check"></i> ПОКАЗАТЬ ОТВЕТ
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQxYSCh-kx1ntS7aILsz9pjKcMmVF9ClM",
+            authDomain: "conditionals-56bde.firebaseapp.com",
+            databaseURL: "https://conditionals-56bde-default-rtdb.firebaseio.com",
+            projectId: "conditionals-56bde",
+            storageBucket: "conditionals-56bde.firebasestorage.app",
+            messagingSenderId: "726113891699",
+            appId: "1:726113891699:web:54bc6d9a0304a6e15e8106"
+        };
+
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            window.db = firebase.database();
+            console.log("✅ Firebase инициализирован");
+        } catch (error) {
+            console.error("❌ Ошибка Firebase:", error);
+        }
+
+        window.QUIZ_DATA = {
+            id: "conditionals_grade9",
+            title: "Conditionals Quiz",
+            description: "15 вопросов по Conditionals",
+            subject: "English",
+            grade: 9,
+            version: "2026.1",
+            questions: [
+                // Часть 1. Теория (1-5)
+                {
+                    id: 1,
+                    text: "Сколько типов Conditionals мы изучаем в 9 классе?",
+                    options: ["A) 2 типа", "B) 3 типа", "C) 4 типа", "D) 5 типов"],
+                    correct: 2,
+                    explanation: "Мы изучаем 4 типа: Zero, First, Second, Third Conditional.",
+                    points: 1
+                },
+                {
+                    id: 2,
+                    text: "Zero Conditional (нулевой тип) используется для:",
+                    options: [
+                        "A) реальных ситуаций в будущем",
+                        "B) общих фактов и истин (то, что всегда работает)",
+                        "C) воображаемых ситуаций",
+                        "D) сожалений о прошлом"
+                    ],
+                    correct: 1,
+                    explanation: "Zero Conditional описывает общие факты и законы природы (If you heat water, it boils).",
+                    points: 1
+                },
+                {
+                    id: 3,
+                    text: "First Conditional (первый тип) используется для:",
+                    options: [
+                        "A) общих фактов",
+                        "B) очень вероятных ситуаций в будущем",
+                        "C) маловероятных/воображаемых ситуаций",
+                        "D) сожалений о прошлом"
+                    ],
+                    correct: 1,
+                    explanation: "First Conditional - очень вероятные ситуации в будущем (If it rains, we will stay home).",
+                    points: 1
+                },
+                {
+                    id: 4,
+                    text: "Second Conditional (второй тип) используется для:",
+                    options: [
+                        "A) научных фактов",
+                        "B) реальных планов на завтра",
+                        "C) маловероятных или воображаемых ситуаций",
+                        "D) того, что уже случилось в прошлом"
+                    ],
+                    correct: 2,
+                    explanation: "Second Conditional - маловероятные или воображаемые ситуации (If I were rich...).",
+                    points: 1
+                },
+                {
+                    id: 5,
+                    text: "Third Conditional (третий тип) используется для:",
+                    options: [
+                        "A) будущих планов",
+                        "B) общих истин",
+                        "C) сожалений о прошлом (того, что уже нельзя изменить)",
+                        "D) советов"
+                    ],
+                    correct: 2,
+                    explanation: "Third Conditional - сожаления о прошлом (If I had known, I would have told you).",
+                    points: 1
+                },
+                
+                // Часть 2. Формулы (6-10)
+                {
+                    id: 6,
+                    text: "Какая формула у Zero Conditional?",
+                    options: [
+                        "A) If + Present Simple, will + глагол",
+                        "B) If + Present Simple, Present Simple",
+                        "C) If + Past Simple, would + глагол",
+                        "D) If + Past Perfect, would have + глагол (3 форма)"
+                    ],
+                    correct: 1,
+                    explanation: "Zero Conditional: If + Present Simple, Present Simple.",
+                    points: 1
+                },
+                {
+                    id: 7,
+                    text: "Какая формула у First Conditional?",
+                    options: [
+                        "A) If + Present Simple, will + глагол",
+                        "B) If + Present Simple, Present Simple",
+                        "C) If + Past Simple, would + глагол",
+                        "D) If + Past Perfect, would have + глагол (3 форма)"
+                    ],
+                    correct: 0,
+                    explanation: "First Conditional: If + Present Simple, will + глагол.",
+                    points: 1
+                },
+                {
+                    id: 8,
+                    text: "Какая формула у Second Conditional?",
+                    options: [
+                        "A) If + Present Simple, will + глагол",
+                        "B) If + Present Simple, Present Simple",
+                        "C) If + Past Simple, would + глагол",
+                        "D) If + Past Perfect, would have + глагол (3 форма)"
+                    ],
+                    correct: 2,
+                    explanation: "Second Conditional: If + Past Simple, would + глагол.",
+                    points: 1
+                },
+                {
+                    id: 9,
+                    text: "Какая формула у Third Conditional?",
+                    options: [
+                        "A) If + Present Simple, will + глагол",
+                        "B) If + Present Simple, Present Simple",
+                        "C) If + Past Simple, would + глагол",
+                        "D) If + Past Perfect, would have + глагол (3 форма)"
+                    ],
+                    correct: 3,
+                    explanation: "Third Conditional: If + Past Perfect, would have + глагол (3 форма).",
+                    points: 1
+                },
+                {
+                    id: 10,
+                    text: "Во Second Conditional после подлежащего 'I' (я) мы используем:",
+                    options: ["A) was", "B) were", "C) am", "D) is"],
+                    correct: 1,
+                    explanation: "В Second Conditional всегда 'were': If I were you...",
+                    points: 1
+                },
+                
+                // Часть 3. Определи тип (11-15)
+                {
+                    id: 11,
+                    text: "Определи тип: 'If you heat ice, it melts.' (Если нагреть лёд, он тает)",
+                    options: ["A) Zero Conditional", "B) First Conditional", "C) Second Conditional", "D) Third Conditional"],
+                    correct: 0,
+                    explanation: "Это Zero Conditional - общий факт.",
+                    points: 1
+                },
+                {
+                    id: 12,
+                    text: "Определи тип: 'If she studies, she will pass the exam.' (Если она будет заниматься, она сдаст экзамен)",
+                    options: ["A) Zero Conditional", "B) First Conditional", "C) Second Conditional", "D) Third Conditional"],
+                    correct: 1,
+                    explanation: "Это First Conditional - реальная ситуация в будущем.",
+                    points: 1
+                },
+                {
+                    id: 13,
+                    text: "Определи тип: 'If I were rich, I would buy a car.' (Если бы я был богатым, я бы купил машину)",
+                    options: ["A) Zero Conditional", "B) First Conditional", "C) Second Conditional", "D) Third Conditional"],
+                    correct: 2,
+                    explanation: "Это Second Conditional - воображаемая ситуация.",
+                    points: 1
+                },
+                {
+                    id: 14,
+                    text: "Определи тип: 'If I had known, I would have told you.' (Если бы я знал, я бы тебе сказал)",
+                    options: ["A) Zero Conditional", "B) First Conditional", "C) Second Conditional", "D) Third Conditional"],
+                    correct: 3,
+                    explanation: "Это Third Conditional - сожаление о прошлом.",
+                    points: 1
+                },
+                {
+                    id: 15,
+                    text: "Определи тип: 'If it rains tomorrow, we will stay home.' (Если завтра пойдёт дождь, мы останемся дома)",
+                    options: ["A) Zero Conditional", "B) First Conditional", "C) Second Conditional", "D) Third Conditional"],
+                    correct: 1,
+                    explanation: "Это First Conditional - реальная ситуация в будущем.",
+                    points: 1
+                }
+            ]
+        };
+
+        console.log(`✅ Загружено ${QUIZ_DATA.questions.length} вопросов`);
+
+        // ===== ОСНОВНАЯ ЛОГИКА =====
+        let currentGameId = null;
+        let currentQuestionIndex = 0;
+        let playersListener = null;
+        let gameListener = null;
+        let answersListener = null;
+        let currentQuestionId = null;
+        let totalPlayersCount = 0;
+
+        const startSection = document.getElementById('startSection');
+        const gameControls = document.getElementById('gameControls');
+        const gameCodeDisplay = document.getElementById('gameCode');
+        const playersList = document.getElementById('playersList');
+        const playerCount = document.getElementById('playerCount');
+        const statsContent = document.getElementById('statsContent');
+        const questionsList = document.getElementById('questionsList');
+        const currentQ = document.getElementById('currentQ');
+
+        const mainInterface = document.getElementById('mainInterface');
+        const presentationMode = document.getElementById('presentationMode');
+        const presentationQNum = document.getElementById('presentationQNum');
+        const presentationQuestion = document.getElementById('presentationQuestion');
+        const answeredCount = document.getElementById('answeredCount');
+        const correctCount = document.getElementById('correctCount');
+
+        function showNotification(message, type = "info") {
+            const colors = { success: '#43e97b', error: '#ff416c', warning: '#f093fb', info: '#4facfe' };
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                border: 1px solid ${colors[type]};
+                color: white; padding: 15px 25px;
+                border-radius: 16px; font-weight: 600;
+                z-index: 10000; animation: slideIn 0.3s ease;
+                display: flex; align-items: center; gap: 10px;
+                border-left: 4px solid ${colors[type]};
+            `;
+            notification.innerHTML = `<span style="font-size: 1.3rem;">${icons[type]}</span> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function startNewGame() {
+            if (!window.db) {
+                showNotification("Firebase не загружен", "error");
+                return;
+            }
+            
+            const code = Math.floor(10000000 + Math.random() * 90000000).toString();
+            currentGameId = "game_" + code;
+            currentQuestionIndex = 0;
+            
+            startSection.style.display = 'none';
+            gameControls.style.display = 'block';
+            gameCodeDisplay.textContent = code;
+            currentQ.textContent = '0/15';
+            
+            const gameData = {
+                id: currentGameId,
+                created: Date.now(),
+                status: "lobby",
+                quizId: QUIZ_DATA.id,
+                currentQuestion: null,
+                players: {},
+                answers: {}
+            };
+            
+            db.ref('games/' + currentGameId).set(gameData)
+                .then(() => {
+                    showNotification(`✅ Игра создана! Код: ${code}`, "success");
+                    listenToPlayers();
+                    updateQuestionsList();
+                    listenToGameChanges();
+                })
+                .catch(error => showNotification("Ошибка: " + error.message, "error"));
+        }
+
+        function startNextQuestion() {
+            if (!currentGameId) {
+                showNotification("Сначала создайте игру", "warning");
+                return;
+            }
+            
+            const question = QUIZ_DATA.questions[currentQuestionIndex];
+            if (!question) {
+                showNotification("🎉 Все вопросы пройдены!", "success");
+                return;
+            }
+            
+            answeredCount.textContent = '0';
+            correctCount.textContent = '0';
+            
+            db.ref(`games/${currentGameId}/players`).once('value').then(snapshot => {
+                const players = snapshot.val() || {};
+                totalPlayersCount = Object.keys(players).length;
+            });
+            
+            db.ref(`games/${currentGameId}/answers/${question.id}`).remove();
+            
+            db.ref('games/' + currentGameId).update({
+                status: "question_active",
+                currentQuestion: question.id,
+                questionStartTime: Date.now()
+            }).then(() => {
+                enterPresentationMode(question);
+                startAnswerTracking(question.id);
+                currentQuestionIndex++;
+                currentQ.textContent = currentQuestionIndex + '/15';
+                updateQuestionsList();
+                showNotification(`Вопрос ${currentQuestionIndex} запущен`, "info");
+            });
+        }
+
+        function startAnswerTracking(questionId) {
+            if (!currentGameId || !questionId) return;
+            
+            currentQuestionId = questionId;
+            
+            if (answersListener) {
+                db.ref(`games/${currentGameId}/answers/${currentQuestionId}`).off('value', answersListener);
+            }
+            
+            answersListener = db.ref(`games/${currentGameId}/answers/${questionId}`).on('value', snapshot => {
+                const answers = snapshot.val() || {};
+                const total = Object.keys(answers).length;
+                let correct = 0;
+                
+                Object.values(answers).forEach(a => { if (a.isCorrect) correct++; });
+                
+                answeredCount.textContent = total;
+                correctCount.textContent = correct;
+                updateStatsDisplay(total, correct, totalPlayersCount);
+            });
+        }
+
+        function updateStatsDisplay(total, correct, totalPlayers) {
+            const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+            
+            statsContent.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">${total}/${totalPlayers}</div>
+                        <div class="stat-label">Ответили</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${correct}</div>
+                        <div class="stat-label">Правильно</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${percentage}%</div>
+                        <div class="stat-label">Успешность</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function enterPresentationMode(question) {
+            mainInterface.style.display = 'none';
+            presentationMode.classList.add('active');
+            
+            presentationQNum.textContent = currentQuestionIndex + 1;
+            
+            let optionsHTML = '<div class="options-grid">';
+            question.options.forEach((opt, i) => {
+                optionsHTML += `<div class="option-card">${opt}</div>`;
+            });
+            optionsHTML += '</div>';
+            
+            presentationQuestion.innerHTML = `
+                <h2>${question.text}</h2>
+                ${optionsHTML}
+            `;
+        }
+
+        function exitPresentation() {
+            if (answersListener && currentQuestionId) {
+                db.ref(`games/${currentGameId}/answers/${currentQuestionId}`).off('value', answersListener);
+                answersListener = null;
+            }
+            
+            presentationMode.classList.remove('active');
+            mainInterface.style.display = 'flex';
+            
+            if (currentGameId) {
+                db.ref('games/' + currentGameId).update({ status: "lobby" });
+            }
+        }
+
+        function showAnswerPresentation() {
+            const question = QUIZ_DATA.questions[currentQuestionIndex - 1];
+            if (!question) return;
+            
+            const correctAnswer = question.options[question.correct];
+            
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'correct-answer';
+            answerDiv.innerHTML = `
+                <h3 style="color: #43e97b; margin-bottom: 20px;">✅ ПРАВИЛЬНЫЙ ОТВЕТ:</h3>
+                <div style="font-size: 2rem; margin: 20px 0; text-align: center;">${correctAnswer}</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 1.2rem;">${question.explanation}</div>
+            `;
+            
+            presentationQuestion.appendChild(answerDiv);
+            
+            if (currentGameId) {
+                db.ref('games/' + currentGameId).update({ status: "showing_results" });
+            }
+        }
+
+        function showAnswer() {
+            showAnswerPresentation();
+        }
+
+        function nextQuestion() {
+            exitPresentation();
+        }
+
+        function resetGame() {
+            if (confirm("Удалить текущую игру?")) {
+                if (currentGameId) {
+                    db.ref('games/' + currentGameId).remove();
+                }
+                
+                if (answersListener && currentQuestionId) {
+                    db.ref(`games/${currentGameId}/answers/${currentQuestionId}`).off('value', answersListener);
+                }
+                if (playersListener) playersListener();
+                if (gameListener) gameListener();
+                
+                currentGameId = null;
+                currentQuestionIndex = 0;
+                startSection.style.display = 'block';
+                gameControls.style.display = 'none';
+                gameCodeDisplay.textContent = '----';
+                playerCount.textContent = '0';
+                currentQ.textContent = '0/15';
+                
+                playersList.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>Участники появятся после подключения</p></div>';
+                statsContent.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>Статистика появится после ответов</p></div>';
+                
+                showNotification("Игра сброшена", "info");
+            }
+        }
+
+        function listenToPlayers() {
+            if (!currentGameId || playersListener) return;
+            
+            playersListener = db.ref(`games/${currentGameId}/players`).on('value', snapshot => {
+                const players = snapshot.val() || {};
+                const playerArray = Object.entries(players).map(([name, data]) => ({ name, ...data }));
+                
+                playerCount.textContent = playerArray.length;
+                totalPlayersCount = playerArray.length;
+                updatePlayersList(playerArray);
+            });
+        }
+
+        function updatePlayersList(players) {
+            if (players.length === 0) {
+                playersList.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>Участники появятся после подключения</p></div>';
+                return;
+            }
+            
+            players.sort((a, b) => (b.score || 0) - (a.score || 0));
+            
+            playersList.innerHTML = players.map((player, index) => `
+                <div class="player-card">
+                    <div class="player-avatar">${player.name.charAt(0).toUpperCase()}</div>
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-score">🎯 ${player.score || 0}</div>
+                    ${index === 0 ? '<div style="color: #FFD700; font-size: 1.5rem; margin-top: 5px;">👑</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function listenToGameChanges() {
+            if (!currentGameId || gameListener) return;
+            
+            gameListener = db.ref(`games/${currentGameId}`).on('value', snapshot => {});
+        }
+
+        function updateQuestionsList() {
+            if (!QUIZ_DATA) return;
+            
+            questionsList.innerHTML = QUIZ_DATA.questions.map((q, index) => {
+                const isCurrent = index === currentQuestionIndex - 1;
+                const isCompleted = index < currentQuestionIndex - 1;
+                
+                return `
+                    <div class="question-item ${isCurrent ? 'active' : isCompleted ? 'completed' : ''}" 
+                         onclick="jumpToQuestion(${index})">
+                        <div class="question-number">${index + 1}</div>
+                        <div class="question-type">${index < 5 ? 'Теория' : index < 10 ? 'Формула' : 'Тип'}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function jumpToQuestion(index) {
+            if (!currentGameId) {
+                showNotification("Сначала создайте игру", "warning");
+                return;
+            }
+            
+            if (index < currentQuestionIndex - 1) {
+                showNotification("Нельзя вернуться к пройденным вопросам", "warning");
+                return;
+            }
+            
+            currentQuestionIndex = index;
+            startNextQuestion();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("✅ Teacher panel loaded");
+            updateQuestionsList();
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        window.startNewGame = startNewGame;
+        window.startNextQuestion = startNextQuestion;
+        window.showAnswer = showAnswer;
+        window.nextQuestion = nextQuestion;
+        window.resetGame = resetGame;
+        window.exitPresentation = exitPresentation;
+        window.showAnswerPresentation = showAnswerPresentation;
+        window.jumpToQuestion = jumpToQuestion;
+    </script>
+</body>
+</html>

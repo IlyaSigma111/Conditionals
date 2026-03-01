@@ -2,26 +2,30 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ученик - Conditionals Quiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* СБРОС И БАЗОВЫЕ СТИЛИ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* убирает серый фон при тапе на iPhone */
         }
         
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
+            color: #ffffff; /* Явно белый цвет */
             min-height: 100vh;
             padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            -webkit-font-smoothing: antialiased; /* сглаживание для iOS */
+            -moz-osx-font-smoothing: grayscale;
         }
         
         body::before {
@@ -35,22 +39,25 @@
                 radial-gradient(circle at 20% 30%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(255, 119, 198, 0.15) 0%, transparent 50%);
             z-index: -1;
+            pointer-events: none;
         }
         
         .container {
             width: 100%;
             max-width: 550px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1); /* чуть увеличил прозрачность для iOS */
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); /* для Safari на iOS */
             border-radius: 32px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
         
         .screen {
-            padding: 30px 25px;
+            padding: 25px 20px;
             display: none;
+            color: #ffffff; /* явно белый для всего текста */
         }
         
         .screen.active {
@@ -65,24 +72,18 @@
         
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .logo {
             font-size: 70px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: inline-block;
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             filter: drop-shadow(0 10px 20px rgba(79, 172, 254, 0.3));
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
         
         h1 {
@@ -93,52 +94,57 @@
             background-clip: text;
             margin-bottom: 10px;
             font-weight: 800;
+            color: #ffffff; /* запасной цвет */
         }
         
         .subtitle {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
+            color: #ffffff; /* белый */
+            font-size: 0.95rem;
             line-height: 1.5;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 12px 15px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         label {
             display: block;
-            margin-bottom: 10px;
-            color: white;
+            margin-bottom: 8px;
+            color: #ffffff; /* белый */
             font-weight: 600;
             font-size: 1rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         
         input {
             width: 100%;
-            padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            color: white;
-            font-size: 1.1rem;
+            color: #ffffff; /* белый текст */
+            font-size: 1rem;
             font-family: inherit;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         input:focus {
             outline: none;
             border-color: #4facfe;
-            background: rgba(79, 172, 254, 0.1);
-            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+            background: rgba(79, 172, 254, 0.2);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
         }
         
         input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.6);
         }
         
         #gameCode {
@@ -147,12 +153,13 @@
             letter-spacing: 4px;
             text-align: center;
             font-weight: 900;
+            color: #43e97b; /* зелёный цвет для кода */
         }
         
         .btn {
             width: 100%;
-            padding: 18px;
-            font-size: 1.2rem;
+            padding: 16px;
+            font-size: 1.1rem;
             font-weight: 700;
             border: none;
             border-radius: 20px;
@@ -161,12 +168,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin: 20px 0;
-            color: white;
+            gap: 10px;
+            margin: 15px 0;
+            color: #ffffff; /* белый текст */
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 2px solid transparent;
         }
         
@@ -190,36 +198,39 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
-            border-color: rgba(79, 172, 254, 0.5);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+            border-color: rgba(79, 172, 254, 0.6);
         }
         
         .btn-danger {
-            background: linear-gradient(135deg, rgba(255, 65, 108, 0.2), rgba(255, 75, 43, 0.2));
-            border-color: rgba(255, 65, 108, 0.5);
+            background: linear-gradient(135deg, rgba(255, 65, 108, 0.3), rgba(255, 75, 43, 0.3));
+            border-color: rgba(255, 65, 108, 0.6);
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
         }
         
         .info-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 24px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 18px;
+            margin: 15px 0;
             border-left: 4px solid #4facfe;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .info-item {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: #ffffff;
         }
         
         .info-item:last-child {
@@ -227,13 +238,14 @@
         }
         
         .info-label {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.95rem;
         }
         
         .info-value {
             font-weight: 700;
             font-size: 1.2rem;
+            color: #ffffff;
         }
         
         #displayScore {
@@ -246,78 +258,83 @@
         }
         
         .question-header {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 20px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .question-subject {
-            background: rgba(79, 172, 254, 0.2);
-            padding: 8px 15px;
+            background: rgba(79, 172, 254, 0.25);
+            padding: 6px 12px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #4facfe;
             font-weight: 600;
         }
         
         .question-counter {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
+            color: #ffffff;
         }
         
         .question-text {
-            font-size: 1.5rem;
-            line-height: 1.5;
-            margin: 25px 0;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            margin: 20px 0;
             text-align: center;
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px 15px;
             border-radius: 20px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .options {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 12px;
+            margin: 25px 0;
         }
         
         .option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
-            padding: 18px 20px;
-            color: white;
+            padding: 15px 18px;
+            color: #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 20px;
-            transition: all 0.3s ease;
+            gap: 15px;
+            transition: all 0.2s ease;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .option:hover {
-            background: rgba(79, 172, 254, 0.15);
-            border-color: rgba(79, 172, 254, 0.3);
-            transform: translateX(5px);
+            background: rgba(79, 172, 254, 0.2);
+            border-color: rgba(79, 172, 254, 0.4);
+            transform: translateX(3px);
         }
         
         .option.selected {
-            background: rgba(79, 172, 254, 0.2);
+            background: rgba(79, 172, 254, 0.25);
             border-color: #4facfe;
-            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
         }
         
         .option-letter {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #4facfe, #00f2fe);
             color: white;
             border-radius: 50%;
@@ -325,49 +342,51 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             flex-shrink: 0;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
         }
         
         .option-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.4;
+            color: #ffffff;
         }
         
         .status {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
         }
         
         .status.correct {
-            background: rgba(67, 233, 123, 0.15);
+            background: rgba(67, 233, 123, 0.2);
             border-color: #43e97b;
             color: #43e97b;
         }
         
         .status.wrong {
-            background: rgba(255, 65, 108, 0.15);
+            background: rgba(255, 65, 108, 0.2);
             border-color: #ff416c;
             color: #ff416c;
         }
         
         .loader {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.15);
             border-top: 4px solid #4facfe;
             border-radius: 50%;
-            margin: 30px auto;
+            margin: 25px auto;
             animation: spin 1s linear infinite;
-            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
         }
         
         @keyframes spin {
@@ -376,103 +395,95 @@
         }
         
         .result-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .result-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-bottom: 15px;
         }
         
         .result-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .result-points {
+            font-size: 2.2rem;
+            color: #43e97b;
             font-weight: 900;
             margin-bottom: 15px;
         }
         
-        .result-points {
-            font-size: 2.5rem;
-            color: #43e97b;
-            font-weight: 900;
-            margin-bottom: 20px;
-        }
-        
         .explanation-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 20px;
-            padding: 20px;
-            margin-top: 25px;
+            padding: 18px;
+            margin-top: 20px;
             text-align: left;
             border-left: 4px solid #4facfe;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .explanation-title {
             color: #4facfe;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .explanation-text {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
-            font-size: 1rem;
+            color: #ffffff;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
         
         .error {
-            background: rgba(255, 65, 108, 0.15);
+            background: rgba(255, 65, 108, 0.2);
             border: 1px solid #ff416c;
-            color: white;
-            padding: 15px;
+            color: #ffffff;
+            padding: 12px;
             border-radius: 16px;
-            margin: 15px 0;
+            margin: 12px 0;
             text-align: center;
             font-weight: 600;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
-        
-        .type-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-        
-        .type-zero { background: rgba(79, 172, 254, 0.2); color: #4facfe; }
-        .type-first { background: rgba(67, 233, 123, 0.2); color: #43e97b; }
-        .type-second { background: rgba(240, 147, 251, 0.2); color: #f093fb; }
-        .type-third { background: rgba(255, 65, 108, 0.2); color: #ff416c; }
         
         .toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 16px;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
             font-weight: 600;
             z-index: 10000;
             animation: slideInRight 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
-            gap: 10px;
-            max-width: 300px;
+            gap: 8px;
+            max-width: 280px;
+            font-size: 0.95rem;
         }
         
         @keyframes slideInRight {
@@ -485,21 +496,49 @@
             to { transform: translateX(100%); opacity: 0; }
         }
         
+        /* Специальные стили для iPhone */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                /* Фикс для iOS */
+                background-attachment: fixed;
+            }
+            
+            .container {
+                /* Увеличиваем контраст для iOS */
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(30px);
+                -webkit-backdrop-filter: blur(30px);
+            }
+            
+            .option {
+                background: rgba(0, 0, 0, 0.3);
+            }
+            
+            .question-text {
+                background: rgba(0, 0, 0, 0.3);
+            }
+            
+            .info-box {
+                background: rgba(0, 0, 0, 0.3);
+            }
+        }
+        
         @media (max-width: 480px) {
             .container { border-radius: 24px; }
-            .screen { padding: 20px 15px; }
+            .screen { padding: 18px 15px; }
             h1 { font-size: 1.8rem; }
             .logo { font-size: 60px; }
-            .question-text { font-size: 1.3rem; }
-            .option { padding: 15px; }
-            .option-letter { width: 40px; height: 40px; font-size: 1.1rem; }
-            .option-text { font-size: 1rem; }
+            .question-text { font-size: 1.2rem; }
+            .option { padding: 12px; }
+            .option-letter { width: 35px; height: 35px; font-size: 1rem; }
+            .option-text { font-size: 0.95rem; }
             #gameCode { font-size: 1.3rem; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- ЭКРАН ВХОДА -->
         <div id="joinScreen" class="screen active">
             <div class="header">
                 <div class="logo">📚</div>
@@ -511,7 +550,7 @@
             
             <div class="form-group">
                 <label><i class="fas fa-user"></i> Твоё имя:</label>
-                <input type="text" id="playerName" placeholder="Например: Анна, Данил, София" maxlength="15">
+                <input type="text" id="playerName" placeholder="Анна, Данил, София..." maxlength="15">
             </div>
             
             <div class="form-group">
@@ -524,18 +563,19 @@
             </button>
             
             <div class="info-box">
-                <p style="margin-bottom: 10px;"><i class="fas fa-info-circle" style="color: #4facfe;"></i> <strong>Как играть:</strong></p>
-                <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">1️⃣ Учитель покажет код на экране</p>
-                <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">2️⃣ Введи код и своё имя</p>
-                <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">3️⃣ Отвечай на вопросы</p>
-                <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">4️⃣ Следи за своим счётом</p>
+                <p style="margin-bottom: 8px;"><i class="fas fa-info-circle" style="color: #4facfe;"></i> <strong style="color: white;">Как играть:</strong></p>
+                <p style="color: white; font-size: 0.9rem;">1️⃣ Учитель покажет код на экране</p>
+                <p style="color: white; font-size: 0.9rem;">2️⃣ Введи код и своё имя</p>
+                <p style="color: white; font-size: 0.9rem;">3️⃣ Отвечай на вопросы</p>
+                <p style="color: white; font-size: 0.9rem;">4️⃣ Следи за своим счётом</p>
             </div>
         </div>
 
+        <!-- ЭКРАН ОЖИДАНИЯ -->
         <div id="waitingScreen" class="screen">
             <div class="header">
                 <div class="loader"></div>
-                <h2 style="margin: 20px 0 10px;">ОЖИДАНИЕ...</h2>
+                <h2 style="margin: 15px 0 5px; color: white;">ОЖИДАНИЕ...</h2>
                 <p class="subtitle">Учитель скоро запустит первый вопрос</p>
             </div>
             
@@ -563,6 +603,7 @@
             </button>
         </div>
 
+        <!-- ЭКРАН ВОПРОСА -->
         <div id="questionScreen" class="screen">
             <div class="question-header">
                 <div class="question-subject">
@@ -584,6 +625,7 @@
             </div>
         </div>
 
+        <!-- ЭКРАН РЕЗУЛЬТАТА -->
         <div id="resultScreen" class="screen">
             <div class="header">
                 <div class="logo" style="font-size: 60px;">📊</div>
@@ -687,13 +729,6 @@
             document.getElementById(screenName + 'Screen').classList.add('active');
         }
 
-        function getTypeBadge(type) {
-            const badges = { zero: 'type-zero', first: 'type-first', second: 'type-second', third: 'type-third' };
-            const labels = { zero: '0 Conditional', first: '1st Conditional', second: '2nd Conditional', third: '3rd Conditional' };
-            const t = type === 'mixed' ? 'first' : type;
-            return `<span class="type-badge ${badges[t] || 'type-first'}">${labels[t] || type}</span>`;
-        }
-
         function joinGame() {
             const name = document.getElementById('playerName').value.trim();
             const code = document.getElementById('gameCode').value.trim();
@@ -705,11 +740,6 @@
             
             if (!code || code.length !== 8 || !/^\d+$/.test(code)) {
                 showError("Введите 8 цифр кода викторины");
-                return;
-            }
-            
-            if (typeof firebase === 'undefined') {
-                showError("Ошибка загрузки. Обнови страницу.");
                 return;
             }
             
@@ -738,13 +768,10 @@
                     return db.ref(`games/${currentGameId}/players/${name}`).set({
                         name: name,
                         joined: Date.now(),
-                        score: 0,
-                        device: /Mobi|Android/i.test(navigator.userAgent) ? "📱 Телефон" : "💻 Компьютер"
+                        score: 0
                     });
                 })
                 .then(() => {
-                    console.log("✅ Подключен к игре:", currentGameId);
-                    
                     document.getElementById('displayName').textContent = name;
                     document.getElementById('displayCode').textContent = code;
                     
@@ -775,7 +802,6 @@
             gameListener = db.ref(`games/${currentGameId}`).on('value', snapshot => {
                 const game = snapshot.val();
                 if (!game) {
-                    console.log("Игра удалена");
                     showToast('Игра завершена учителем', 'warning');
                     leaveGame();
                     return;
@@ -843,12 +869,7 @@
         }
 
         function selectAnswer(answerIndex) {
-            if (hasAnswered || !currentQuestion || !currentGameId || !playerName || !db) {
-                if (hasAnswered) {
-                    showToast('Ты уже ответил на этот вопрос', 'warning');
-                }
-                return;
-            }
+            if (hasAnswered || !currentQuestion || !currentGameId || !playerName || !db) return;
             
             hasAnswered = true;
             
@@ -873,7 +894,7 @@
                 }
                 
                 const status = document.getElementById('answerStatus');
-                status.textContent = isCorrect ? "✅ Правильно! Молодец!" : "❌ Неправильно. Попробуй в следующий раз!";
+                status.textContent = isCorrect ? "✅ Правильно! Молодец!" : "❌ Неправильно";
                 status.className = isCorrect ? "status correct" : "status wrong";
                 
                 showToast(isCorrect ? '✅ +1 очко!' : '❌ Неправильно', isCorrect ? 'success' : 'error');
@@ -906,7 +927,6 @@
                                 ${isCorrect ? 'ПРАВИЛЬНО!' : 'НЕПРАВИЛЬНО'}
                             </div>
                             <div class="result-points">${points > 0 ? '+' + points : '0'} очков</div>
-                            ${getTypeBadge(question.type || 'first')}
                             <div class="explanation-box">
                                 <div class="explanation-title"><i class="fas fa-lightbulb"></i> Объяснение:</div>
                                 <div class="explanation-text">${question.explanation}</div>
@@ -917,7 +937,6 @@
                             <div class="result-icon">⏰</div>
                             <div class="result-title" style="color: #ffaa00;">НЕТ ОТВЕТА</div>
                             <div class="result-points" style="color: #ffaa00;">0 очков</div>
-                            ${getTypeBadge(question.type || 'first')}
                             <div class="explanation-box">
                                 <div class="explanation-title"><i class="fas fa-lightbulb"></i> Правильный ответ:</div>
                                 <div class="explanation-text">${question.options[question.correct]}</div>
@@ -974,14 +993,6 @@
             document.getElementById('gameCode').addEventListener('input', function() {
                 this.value = this.value.replace(/\D/g, '').substring(0, 8);
             });
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-                @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-                @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-            `;
-            document.head.appendChild(style);
         });
 
         window.joinGame = joinGame;
